@@ -1,24 +1,41 @@
-# 🌍 Tour App
+# 🚀 Tour App - DevOps Practice Project
 
-A modern full-stack tour booking application built with **Express.js**, **React**, **PostgreSQL**, and **Docker**. Book exciting tours from around the world with ease!
+A **DevOps learning project** featuring a full-stack tour booking application with **comprehensive CI/CD pipelines**, **containerization**, **orchestration**, and **multi-environment deployments**. Perfect for practicing modern DevOps tools and practices!
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue)](https://kubernetes.io)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-brightgreen)](https://github.com/features/actions)
 [![Node.js](https://img.shields.io/badge/Node.js-v20-green)](https://nodejs.org)
-[![React](https://img.shields.io/badge/React-18-blue)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791)](https://www.postgresql.org)
 
 ---
 
-## ✨ Features
+## 🎯 DevOps Learning Objectives
 
-- 🔐 **User Authentication** - Secure registration and login with session-based authentication
-- 🎫 **Tour Browsing** - Browse and view detailed information about available tours
-- 📅 **Tour Booking** - Book tours and manage your reservations
-- 👤 **User Profiles** - Manage your account and booking history
-- 🎨 **Modern UI** - Beautiful, responsive interface built with React and Tailwind CSS
-- 🔒 **Password Security** - Scrypt-based password hashing with cryptographic salt
-- 📱 **Fully Responsive** - Works seamlessly on desktop, tablet, and mobile devices
+This project demonstrates:
+
+- 🐳 **Container Management** - Docker & Docker Compose multi-container orchestration
+- 🔄 **CI/CD Pipelines** - GitHub Actions, GitLab CI, Jenkins automation
+- ☸️ **Kubernetes Deployment** - K8s manifests, helm charts, scaling
+- 📦 **Infrastructure as Code** - Terraform, Docker Compose, Kubernetes YAML
+- 🔐 **Security & Secrets** - Environment management, credential handling
+- 📊 **Monitoring & Logging** - Prometheus, Grafana, ELK stack integration
+- 🚀 **Multi-Environment Deployments** - Dev, staging, production
+- 🔧 **Configuration Management** - Environment-specific configs
+- 📈 **Load Balancing** - Nginx, reverse proxy, traffic routing
+- 🔍 **Database Management** - PostgreSQL backup, migration, optimization
+- 🚢 **Blue-Green Deployment** - Zero-downtime updates
+- 🛡️ **SSL/TLS** - HTTPS, certificate management
+
+---
+
+## ✨ Application Features
+
+- 🔐 **User Authentication** - Session-based auth with PostgreSQL store
+- 🎫 **Tour Management** - Booking system with database persistence
+- 🎨 **Modern UI** - React frontend with responsive design
+- 📱 **API-First** - RESTful backend with TypeScript validation
 
 ---
 
@@ -181,37 +198,341 @@ VITE_API_URL=http://localhost/api
 
 ---
 
-## 🐳 Docker Setup
+## � CI/CD Pipelines
 
-### Using Docker Compose (Recommended)
+This project includes multiple CI/CD implementations for DevOps practice:
 
-```bash
-# Build and start all services
-docker compose up -d --build
+### GitHub Actions Pipeline
 
-# View logs
-docker compose logs -f backend
+**File**: `.github/workflows/ci-cd.yml`
 
-# Stop services
-docker compose down
+Features:
+- ✅ Build and push Docker images
+- ✅ Run automated tests
+- ✅ Security scanning
+- ✅ Deploy to multiple environments
+- ✅ Database migrations
 
-# Clean up (remove volumes)
-docker compose down -v
+```yaml
+# Triggers on push to main/develop
+# Tests on all PRs
+# Auto-deploys to staging on develop
+# Manual deploy to production
 ```
 
-### Services
+### GitLab CI Pipeline
 
-1. **Frontend** (Nginx on port 80)
-   - Serves React SPA
-   - Proxies `/api` requests to backend
+**File**: `.gitlab-ci.yml`
 
-2. **Backend** (Express on port 5000)
-   - REST API server
-   - Session management
+Stages:
+- `build` - Build Docker images
+- `test` - Run unit/integration tests
+- `security` - Scan for vulnerabilities
+- `deploy_staging` - Deploy to staging
+- `deploy_prod` - Manual production deploy
 
-3. **Database** (PostgreSQL on port 5432)
-   - Data persistence
-   - Session store
+### Jenkins Pipeline
+
+**File**: `Jenkinsfile`
+
+Declarative pipeline with:
+- Docker agent
+- Parallel test execution
+- Artifact archiving
+- Deploy approval stage
+
+---
+
+## 🐳 Docker & Container Orchestration
+
+### Docker Compose (Development)
+
+```bash
+docker compose up -d --build
+```
+
+Services:
+- Frontend (Nginx)
+- Backend (Express.js)
+- PostgreSQL database
+- Network bridge
+
+### Kubernetes (Production)
+
+**Files**: `k8s/` directory
+
+Includes:
+- Deployment manifests
+- Service definitions
+- ConfigMap & Secrets
+- Ingress configuration
+- StatefulSet for database
+- PersistentVolumes
+
+Deploy to K8s:
+```bash
+kubectl apply -f k8s/
+
+# Or using Helm
+helm install tour-app ./helm-chart
+```
+
+---
+
+## 🚀 Deployment Options
+
+### 1. Docker Compose (Development/Staging)
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### 2. Kubernetes (Production)
+```bash
+# Apply manifests
+kubectl apply -f k8s/
+
+# Scale replicas
+kubectl scale deployment tour-app-backend --replicas=3
+
+# Check status
+kubectl get deployments
+kubectl logs -f deployment/tour-app-backend
+```
+
+### 3. AWS (ECS/Fargate)
+**Files**: `deploy/aws/`
+- Task definitions
+- CloudFormation templates
+- ELB configuration
+
+### 4. Google Cloud (GKE)
+**Files**: `deploy/gcp/`
+- GKE cluster config
+- Cloud SQL proxy
+- Cloud Storage setup
+
+### 5. Azure (AKS)
+**Files**: `deploy/azure/`
+- AKS manifests
+- Azure Database for PostgreSQL
+- Application Gateway setup
+
+### 6. DigitalOcean
+**Files**: `deploy/digitalocean/`
+- DOKS manifests
+- App Platform config
+
+---
+
+## 📊 Monitoring & Observability
+
+### Prometheus Monitoring
+
+**Files**: `monitoring/prometheus.yml`
+
+Metrics collected:
+- Application metrics (requests, latency)
+- Container metrics (CPU, memory)
+- Database metrics (connections, queries)
+
+### Grafana Dashboards
+
+**Files**: `monitoring/grafana/dashboards/`
+
+Pre-built dashboards:
+- Application performance
+- Infrastructure metrics
+- Database performance
+- Error rates
+
+### ELK Stack (Logging)
+
+**Files**: `logging/`
+
+Setup:
+- Elasticsearch for log storage
+- Logstash for log processing
+- Kibana for visualization
+
+### Application Logging
+
+- Winston logger in backend
+- Structured JSON logs
+- Log aggregation ready
+
+---
+
+## 🔐 Security & Secrets Management
+
+### Environment Secrets
+
+```bash
+# Using GitHub Secrets
+- DATABASE_URL
+- SESSION_SECRET
+- API_KEYS
+```
+
+### Secret Management Tools
+
+- **Sealed Secrets** - Kubernetes secret encryption
+- **HashiCorp Vault** - Centralized secrets
+- **AWS Secrets Manager** - AWS native
+- **GitHub Secrets** - Built-in for Actions
+
+### SSL/TLS Configuration
+
+- Let's Encrypt automation
+- Certificate renewal
+- HTTPS enforcement
+
+---
+
+## 📝 Infrastructure as Code
+
+### Docker Compose
+
+```bash
+# Development
+docker compose up -d
+
+# Production
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### Kubernetes Manifests
+
+```bash
+# Apply all manifests
+kubectl apply -f k8s/
+
+# Or individual resources
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+kubectl apply -f k8s/ingress.yaml
+```
+
+### Helm Charts
+
+```bash
+# Install
+helm install tour-app ./helm-chart
+
+# Upgrade
+helm upgrade tour-app ./helm-chart
+
+# Rollback
+helm rollback tour-app
+```
+
+### Terraform (AWS/GCP/Azure)
+
+**Files**: `terraform/`
+
+```bash
+terraform init
+terraform plan
+terraform apply
+```
+
+Manages:
+- Compute instances
+- Networks
+- Databases
+- Load balancers
+- CDN
+
+---
+
+## 🧪 Testing & Quality Assurance
+
+### Automated Tests in CI/CD
+
+```bash
+# Unit tests
+npm run test
+
+# Integration tests
+npm run test:integration
+
+# E2E tests
+npm run test:e2e
+
+# Code coverage
+npm run coverage
+
+# Security scan
+npm run security-check
+
+# Lint check
+npm run lint
+```
+
+### Test Coverage Requirements
+
+- Minimum 80% coverage for PR merge
+- Automated code quality checks
+- Dependency vulnerability scanning
+
+---
+
+## 📈 Performance & Scalability
+
+### Load Testing
+
+```bash
+# Using k6
+k6 run performance-tests/load-test.js
+
+# Using Apache Bench
+ab -n 10000 -c 100 http://localhost/api/tours
+```
+
+### Auto-Scaling
+
+**Kubernetes HPA**:
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tour-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tour-app-backend
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+```
+
+---
+
+## 🔄 GitOps Workflow
+
+### Continuous Deployment
+
+1. Push to main branch
+2. GitHub Actions triggers
+3. Tests run automatically
+4. Docker image built & pushed
+5. K8s manifests updated
+6. ArgoCD detects changes
+7. Auto-deploy to cluster
+
+### Manual Approval (Production)
+
+1. Create PR
+2. Reviews required
+3. Tests must pass
+4. Deploy approval needed
+5. ArgoCD syncs changes
 
 ---
 
