@@ -6,13 +6,23 @@ import { api } from "@shared/routes";
 import { z } from "zod";
 import { insertUserSchema, insertTourSchema } from "@shared/schema";
 import passport from "passport";
+import { scrypt, randomBytes } from "crypto";
+import { promisify } from "util";
+
+const scryptAsync = promisify(scrypt);
+
+async function hashPassword(password: string) {
+  const salt = randomBytes(16).toString("hex");
+  const buf = (await scryptAsync(password, salt, 64)) as Buffer;
+  return `${buf.toString("hex")}.${salt}`;
+}
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   // Setup Auth
-  const { hashPassword } = setupAuth(app);
+  setupAuth(app);
 
   // Auth Routes
   app.post(api.auth.register.path, async (req, res) => {
@@ -25,14 +35,18 @@ export async function registerRoutes(
       const hashedPassword = await hashPassword(input.password);
       const user = await storage.createUser({ ...input, password: hashedPassword });
       req.login(user, (err) => {
-        if (err) return res.status(500).json({ message: "Login failed after register" });
+        if (err) {
+          console.error("Login failed after register:", err);
+          return res.status(500).json({ message: "Login failed after register" });
+        }
         return res.status(201).json(user);
       });
     } catch (err) {
       if (err instanceof z.ZodError) {
         return res.status(400).json({ message: err.errors[0].message });
       }
-      throw err;
+      console.error("Registration error:", err);
+      res.status(500).json({ message: "Registration failed" });
     }
   });
 

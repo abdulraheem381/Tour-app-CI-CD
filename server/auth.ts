@@ -33,9 +33,22 @@ async function comparePasswords(supplied: string, stored: string) {
 
 export function setupAuth(app: Express) {
   const PostgresStore = connectPg(session);
+  
+  // Initialize the session table manually using pool query
+  pool.query(`
+    CREATE TABLE IF NOT EXISTS session (
+      sid varchar NOT NULL COLLATE "default",
+      sess json NOT NULL,
+      expire timestamp(6) NOT NULL,
+      PRIMARY KEY (sid)
+    ) WITH (OIDS=FALSE);
+    CREATE INDEX IF NOT EXISTS "IDX_session_expire" on session ("expire");
+  `).catch(err => console.error("Failed to create session table:", err));
+
   const sessionStore = new PostgresStore({
     pool,
-    createTableIfMissing: true,
+    createTableIfMissing: false,
+    tableName: "session",
   });
 
   app.use(

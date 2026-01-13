@@ -1,5 +1,6 @@
 {
-  "name": "rest-express",
+  "name": "tour-app",
+  "description": "A modern full-stack tour booking application built with Express, React, and PostgreSQL",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",

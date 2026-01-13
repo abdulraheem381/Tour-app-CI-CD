@@ -7,7 +7,9 @@ export function useUser() {
   return useQuery({
     queryKey: [api.auth.me.path],
     queryFn: async () => {
-      const res = await fetch(api.auth.me.path);
+      const res = await fetch(api.auth.me.path, {
+        credentials: "include",
+      });
       if (res.status === 401) return null;
       if (!res.ok) throw new Error("Failed to fetch user");
       return api.auth.me.responses[200].parse(await res.json());
@@ -26,6 +28,7 @@ export function useLogin() {
         method: api.auth.login.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
+        credentials: "include",
       });
       
       if (!res.ok) {
@@ -54,6 +57,7 @@ export function useRegister() {
         method: api.auth.register.method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -65,8 +69,9 @@ export function useRegister() {
       }
       return api.auth.register.responses[201].parse(await res.json());
     },
-    onSuccess: () => {
-      toast({ title: "Success!", description: "Account created. Please log in." });
+    onSuccess: (user) => {
+      queryClient.setQueryData([api.auth.me.path], user);
+      toast({ title: "Success!", description: "Account created and logged in!" });
     },
     onError: (error) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -80,7 +85,10 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      const res = await fetch(api.auth.logout.path, { method: api.auth.logout.method });
+      const res = await fetch(api.auth.logout.path, { 
+        method: api.auth.logout.method,
+        credentials: "include",
+      });
       if (!res.ok) throw new Error("Logout failed");
     },
     onSuccess: () => {
