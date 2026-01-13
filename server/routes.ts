@@ -5,6 +5,7 @@ import { setupAuth } from "./auth";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { insertUserSchema, insertTourSchema } from "@shared/schema";
+import passport from "passport";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -37,7 +38,6 @@ export async function registerRoutes(
 
   app.post(api.auth.login.path, (req, res, next) => {
     // Passport authentication middleware
-    const passport = require('passport');
     passport.authenticate('local', (err: any, user: any, info: any) => {
       if (err) return next(err);
       if (!user) return res.status(401).json({ message: "Invalid credentials" });
@@ -96,7 +96,7 @@ async function seedTours() {
         description: "Explore the depths of the Grand Canyon with our expert guides. 3 days of hiking and camping.",
         price: 499,
         duration: "3 days",
-        image: "https://images.unsplash.com/photo-1474044159687-1ee9fc5e683f?auto=format&fit=crop&q=80&w=1000",
+        image: "https://images.unsplash.com/photo-1615551043360-33de8b5f410c?auto=format&fit=crop&q=80&w=1000",
       },
       {
         name: "Kyoto Cherry Blossom Tour",
