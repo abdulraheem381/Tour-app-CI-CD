@@ -1,0 +1,115 @@
+You are a Senior DevOps + Full-Stack Engineer.
+
+Build a COMPLETE tour package web application FROM SCRATCH
+specifically for DevOps practice.
+
+⚠️ IMPORTANT RULES:
+- Focus on stability, not features
+- Clean architecture
+- Everything must work out-of-the-box
+- Easy to containerize and deploy
+- Code must be simple, readable, and realistic
+
+====================================
+TECH STACK (MANDATORY)
+====================================
+Frontend:
+- React (Vite)
+- Axios
+- Environment-based API config
+
+Backend:
+- Node.js
+- Express.js
+- JWT Authentication
+- REST APIs
+
+Database:
+- PostgreSQL (preferred) OR MongoDB
+- Seed data included
+
+DevOps:
+- Dockerfile for frontend
+- Dockerfile for backend
+- docker-compose.yml
+- .env.example files
+- Health check endpoint (/health)
+
+====================================
+CORE FEATURES ONLY (NO EXTRA)
+====================================
+1. Authentication
+   - Register
+   - Login
+   - JWT-based auth
+   - Protected route test
+
+2. Tour Packages
+   - List all tours
+   - Single tour fetch
+   - Data must come from DB
+
+3. Homepage UI
+   - Clean hero section
+   - Tour cards
+   - No broken images
+   - Static images stored correctly
+
+====================================
+PROJECT STRUCTURE
+====================================
+/frontend
+  /src
+  /public
+  .env.example
+  Dockerfile
+
+/backend
+  /src
+  /routes
+  /controllers
+  /models
+  .env.example
+  Dockerfile
+
+/docker-compose.yml
+/README.md
+
+====================================
+DEVOPS REQUIREMENTS
+====================================
+1. App must run with:
+   docker-compose up --build
+
+2. Environment variables:
+   - No hardcoded secrets
+   - Separate frontend/backend configs
+
+3. Logging:
+   - Console logs for API requests
+   - DB connection logs
+
+4. Health checks:
+   - Backend: /health
+   - Frontend loads without errors
+
+====================================
+DELIVERABLES
+====================================
+1. Fully working app
+2. Seed data for tours
+3. Clear README with:
+   - Local run instructions
+   - Docker instructions
+   - DevOps practice ideas
+
+====================================
+FINAL CHECK
+====================================
+- Frontend fetches data successfully
+- Auth works
+- No broken images
+- No console errors
+- No unused code
+
+Start by scaffolding the project, then implement backend, then frontend, then Docker setup.
