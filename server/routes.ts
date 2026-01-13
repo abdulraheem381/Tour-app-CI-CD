@@ -75,6 +75,31 @@ export async function registerRoutes(
     res.json(tour);
   });
 
+  // Booking Routes
+  app.post(api.bookings.create.path, async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const { tourId } = req.body;
+    const tour = await storage.getTour(Number(tourId));
+    if (!tour) {
+      return res.status(404).json({ message: "Tour not found" });
+    }
+    const booking = await storage.createBooking({
+      userId: (req.user as any).id,
+      tourId: Number(tourId),
+    });
+    res.status(201).json(booking);
+  });
+
+  app.get(api.bookings.list.path, async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const bookings = await storage.getBookingsByUser((req.user as any).id);
+    res.json(bookings);
+  });
+
   // Health Check
   app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
@@ -96,7 +121,7 @@ async function seedTours() {
         description: "Explore the depths of the Grand Canyon with our expert guides. 3 days of hiking and camping.",
         price: 499,
         duration: "3 days",
-        image: "https://images.unsplash.com/photo-1615551043360-33de8b5f410c?auto=format&fit=crop&q=80&w=1000",
+        image: "https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?auto=format&fit=crop&q=80&w=1000",
       },
       {
         name: "Kyoto Cherry Blossom Tour",

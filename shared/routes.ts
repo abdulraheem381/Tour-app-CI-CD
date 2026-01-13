@@ -70,6 +70,29 @@ export const api = {
       },
     },
   },
+  bookings: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/bookings',
+      responses: {
+        200: z.array(z.object({
+          id: z.number(),
+          bookedAt: z.string(),
+          tour: z.custom<typeof tours.$inferSelect>(),
+        })),
+      },
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/bookings',
+      input: z.object({ tourId: z.number() }),
+      responses: {
+        201: z.custom<typeof bookings.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+        404: z.object({ message: z.string() }),
+      },
+    },
+  },
 };
 
 export function buildUrl(path: string, params?: Record<string, string | number>): string {

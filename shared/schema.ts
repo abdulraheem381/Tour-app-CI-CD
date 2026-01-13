@@ -17,10 +17,20 @@ export const tours = pgTable("tours", {
   image: text("image").notNull(),
 });
 
+export const bookings = pgTable("bookings", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  tourId: integer("tour_id").notNull(),
+  bookedAt: timestamp("booked_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users);
 export const insertTourSchema = createInsertSchema(tours).omit({ id: true });
+export const insertBookingSchema = createInsertSchema(bookings).omit({ id: true, bookedAt: true });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Tour = typeof tours.$inferSelect;
 export type InsertTour = z.infer<typeof insertTourSchema>;
+export type Booking = typeof bookings.$inferSelect;
+export type InsertBooking = z.infer<typeof insertBookingSchema>;
