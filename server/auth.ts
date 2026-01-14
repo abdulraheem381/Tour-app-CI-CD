@@ -6,7 +6,7 @@ import connectPg from "connect-pg-simple";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
-import { User } from "@shared/schema";
+import type { User } from "@shared/schema";
 import { pool } from "./db";
 
 const scryptAsync = promisify(scrypt);
@@ -14,7 +14,17 @@ const scryptAsync = promisify(scrypt);
 // Extended session declaration
 declare global {
   namespace Express {
-    interface User extends User {}
+    interface User extends globalThis.User {}
+  }
+}
+
+// Extend Express User type
+declare global {
+  interface User {
+    id: number;
+    username: string;
+    password: string;
+    role: string;
   }
 }
 
