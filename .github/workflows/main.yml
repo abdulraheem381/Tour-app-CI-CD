@@ -19,13 +19,13 @@ jobs:
           path: ./client
           file: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME}}/tourapp-frontent:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME}}/tourapp-frontent
       - name: Build & push backend image
         uses: docker/build-push-action@v6.18.0
         with:
           path: ./server
           file: Dockerfile
-          tags: ${{ secrets.DOCKERHUB_TOKEN }}/tourapp-backend:latest
+          tags: ${{ secrets.DOCKERHUB_TOKEN }}/tourapp-backend
           push: true
         
 
