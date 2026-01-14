@@ -1,6 +1,7 @@
 name: "Build & Deploy to K8s"
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
