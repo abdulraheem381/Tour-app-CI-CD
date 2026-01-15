@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: default
+data:
+  init-db.sql: |
+    -- Initial database setup
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      username TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'USER'
+    );
+
+    CREATE TABLE IF NOT EXISTS tours (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL,
+      price INTEGER NOT NULL,
+      duration TEXT NOT NULL,
+      image TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS bookings (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      tour_id INTEGER NOT NULL,
+      booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (tour_id) REFERENCES tours(id)
+    );
