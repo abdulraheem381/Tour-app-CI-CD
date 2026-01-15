@@ -49,9 +49,19 @@ Or monitor with:
 kubectl get pods -w
 ```
 
-## Access Your App
+## Access Your App (RHEL)
 
-**Frontend:** http://localhost:30080
+**Option 1: Port Forward (Recommended for RHEL)**
+```bash
+kubectl port-forward svc/frontend 30080:80
+```
+Then access: http://localhost:30080
+
+**Option 2: Get Kind Node IP**
+```bash
+KIND_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+echo "Access frontend at: http://$KIND_IP:30080"
+```
 
 **Check pod status:**
 ```bash
@@ -71,11 +81,18 @@ kubectl logs -f deployment/frontend
 kubectl logs -f deployment/postgres
 ```
 
-## Port Forwarding (Alternative)
+## Port Forwarding
 
-If you want to access backend directly:
+Forward individual services:
 ```bash
+# Frontend
+kubectl port-forward svc/frontend 30080:80
+
+# Backend
 kubectl port-forward svc/backend 5000:5000
+
+# Database
+kubectl port-forward svc/postgres 5432:5432
 ```
 
 ## Cleanup
@@ -84,10 +101,11 @@ kubectl port-forward svc/backend 5000:5000
 kind delete cluster --name tour-app
 ```
 
-## Notes for Kind
+## Notes for Kind on RHEL
 
 - Images use `imagePullPolicy: Never` because they're loaded from Docker daemon
-- Frontend accessible via NodePort on port 30080
+- Frontend accessible via NodePort on port 30080 (use port-forward or kind node IP)
 - Backend accessible via ClusterIP (internal) on port 5000
 - Database accessible via ClusterIP (internal) on port 5432
 - All services are in the `default` namespace
+- For RHEL, port-forward is the most reliable method: `kubectl port-forward svc/frontend 30080:80`
